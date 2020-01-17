@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         // api.getUserLogin() : 레트로핏을 써서 웹 서버에 HTTP 호출하는 함수
         Call<String> call = api.getUserLogin(username, password);
 
-        call.enqueue(new Callback<String>() { // 서버가 JSON 응답을 제공하면 onResponse() 호출
+        call.enqueue(new Callback<String>() { // 서버가 JSON 응답을 제공하면 onResponse()를 호출
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.e("Responsestring", response.body().toString());
