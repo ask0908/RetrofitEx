@@ -2,6 +2,7 @@ package com.example.retrofitex;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ public class WelcomeActivity extends AppCompatActivity {
     // 쉐어드 헬퍼 클래스를 써서 username 및 hobby 같은 값을 채운다
     private PreferenceHelper preferenceHelper;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

@@ -58,34 +58,37 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // EditText 2개에서 사용자 이름, 비밀번호 값을 String 변수로 가져오고 레트로핏 클래스의 객체를 생성하는 함수
     private void loginUser() {
 
         final String username = etUname.getText().toString().trim();
         final String password = etPass.getText().toString().trim();
 
+        // 레트로핏 객체 생성
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(LoginInterface.LOGINURL)
+                .baseUrl(LoginInterface.LOGINURL) // 로그인 URL 통합
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
 
         LoginInterface api = retrofit.create(LoginInterface.class);
 
+        // api.getUserLogin() : 레트로핏을 써서 웹 서버에 HTTP 호출하는 함수
         Call<String> call = api.getUserLogin(username, password);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<String>() { // 서버가 JSON 응답을 제공하면 onResponse() 호출
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.i("Responsestring", response.body().toString());
-                //Toast.makeText()
+                Log.e("Responsestring", response.body().toString());
+                // Toast.makeText()
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.i("onSuccess", response.body().toString());
+                        Log.e("onSuccess", response.body().toString());
 
                         String jsonresponse = response.body().toString();
                         parseLoginData(jsonresponse);
 
                     } else {
-                        Log.i("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                        Log.e("onEmptyResponse", "Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -98,11 +101,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // JSON 응답의 status 필드를 확인하는 함수
     private void parseLoginData(String response){
         try {
+            // status 값이 true라면
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getString("status").equals("true")) {
 
+                // 컴파일러는 saveInfo()를 호출한다
                 saveInfo(response);
 
                 Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
@@ -117,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // 쉐어드 헬퍼 클래스를 써서 이름, 취미 입력값을 쉐어드에 저장하는 함수
     private void saveInfo(String response){
 
         preferenceHelper.putIsLogin(true);
